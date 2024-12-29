@@ -408,3 +408,56 @@ function validarSoloNumeros(valor){
     }
     return true;
 }
+
+/*===============================================
+    Usamos la funcion de authHandlers.js
+================================================*/
+
+
+// Importamos las funciones authHandlers.js
+import { registrarUsuario, iniciarSesion } from '../../public/auth/js/authHandlers.js';
+
+// Evento para registro
+btnRegistro.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const usuario = {
+        nombre: formRegistro.nombre.value.trim(),
+        apellido: formRegistro.apellido.value.trim(),
+        correo: formRegistro.correo.value.trim(),
+        password: formRegistro.password.value.trim(),
+        telefono: formRegistro.telefono.value.trim(),
+    };
+
+    const resultado = registrarUsuario(usuario);
+
+    const msError = document.querySelector('#formRegistro .error-text');
+    if (resultado.success) {
+        alert(resultado.message);
+        formRegistro.reset();
+    } else {
+        msError.classList.add('active');
+        msError.innerHTML = `<p>${resultado.message}</p>`;
+    }
+});
+
+// Evento para inicio de sesión
+btnLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const correo = formLogin.correo.value.trim();
+    const password = formLogin.password.value.trim();
+
+    const resultado = iniciarSesion(correo, password);
+
+    const msError = document.querySelector('#formLogin .error-text');
+    if (resultado.success) {
+        alert(resultado.message);
+        // Redirigir a la página principal
+        window.location.href = '../../public/tabs/index.html';
+    } else {
+        msError.classList.add('active');
+        msError.innerHTML = `<p>${resultado.message}</p>`;
+    }
+});
+
